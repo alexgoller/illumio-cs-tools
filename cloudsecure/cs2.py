@@ -85,6 +85,9 @@ class CloudSecureClient:
             'X-Tenant-Id': self._tenant_id
         })
 
+    def set_credentials(self, service_account_key: str, service_account_token: str) -> None:
+        self._set_auth_headers(service_account_key, service_account_token)
+
     def _request(self, method: str, endpoint: str, **kwargs) -> Response:
         try:
             response = None

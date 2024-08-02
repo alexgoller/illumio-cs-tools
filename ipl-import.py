@@ -13,7 +13,8 @@ import os
 import base64
 from urllib.request import build_opener, HTTPHandler, Request
 import urllib.parse
-from cloudsecure import *
+from illumio import *
+from CloudSecure import *
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -39,21 +40,8 @@ def main():
         service_account_token=args.service_account_token
     )
 
-    with open(args.input_file.name, 'r') as f:
-        iplist = json.load(f)
-
-    for ip_list in iplist:
-        data = {
-            "name": ip_list['name'],
-            "ip_ranges": ip_list['ip_ranges'],
-        }
-        try:
-            print(f'Data: {data}    {ip_list["name"]}')
-            # this posts the iplist to the draft policy
-            response = client.post('/sec_policy/draft/ip_lists', json=data)
-            print(f'Response: {response.status_code} {response.text}')
-        except Exception as e:
-            print(f'Error: {e}')
+    response = client.post('/sec_policy/draft/ip_lists', json=data)
+    print(response.json())
 
 
 if __name__ == "__main__":
